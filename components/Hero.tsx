@@ -3,58 +3,77 @@ import { ArrowRight } from 'lucide-react';
 
 const FloatingIcon = ({ src, className, size = 48 }: { src: string; className: string; size?: number }) => (
   <div className={`absolute p-3 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex items-center justify-center ${className}`}>
-    <img src={src} alt="brand icon" width={size} height={size} className="w-full h-full object-contain" />
+    <img 
+      src={src} 
+      alt="brand icon" 
+      width={size} 
+      height={size} 
+      className="w-full h-full object-contain"
+      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+    />
   </div>
 );
 
-const TrustedLogo = ({ src, name }: { src: string; name: string }) => (
-  <img src={src} alt={name} className="h-6 w-auto opacity-40 hover:opacity-70 transition-opacity grayscale" />
-);
+const trustedLogos = [
+  { name: 'Uber', src: 'https://cdn.simpleicons.org/uber/000000' },
+  { name: 'Headspace', src: 'https://cdn.simpleicons.org/headspace/000000' },
+  { name: 'Meta', src: 'https://cdn.simpleicons.org/meta/000000' },
+  { name: 'Airbnb', src: 'https://cdn.simpleicons.org/airbnb/000000' },
+  { name: 'Revolut', src: 'https://cdn.simpleicons.org/revolut/000000' },
+  { name: 'Pinterest', src: 'https://cdn.simpleicons.org/pinterest/000000' },
+  { name: 'Spotify', src: 'https://cdn.simpleicons.org/spotify/000000' },
+  { name: 'Netflix', src: 'https://cdn.simpleicons.org/netflix/000000' },
+];
+
+// Create a sufficiently long list of logos to ensure it fills wide screens
+// We duplicate the array 3 times to form one "set", then we will render two of these "sets" for the marquee.
+const logoSet = [...trustedLogos, ...trustedLogos, ...trustedLogos];
 
 export const Hero: React.FC = () => {
   return (
     <section className="relative pt-20 pb-16 overflow-hidden">
       
       {/* Floating Logos - Background Layer */}
-      <div className="absolute inset-0 max-w-7xl mx-auto pointer-events-none select-none">
-        {/* Top Center - Shopify (Fixed Size) */}
+      {/* Reduced height to 75% to strictly avoid overlap with Trusted By section */}
+      <div className="absolute inset-x-0 top-0 h-[75%] max-w-[1600px] mx-auto pointer-events-none select-none px-4">
+        {/* Top Center - Shopify */}
         <FloatingIcon 
           src="https://cdn.simpleicons.org/shopify/96bf48" 
-          className="top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-float w-16 h-16" 
+          className="top-6 left-1/2 -translate-x-1/2 animate-float w-14 h-14" 
           size={32}
         />
         
         {/* Left Side */}
         <FloatingIcon 
           src="https://cdn.simpleicons.org/slack/4A154B" 
-          className="top-20 left-[15%] w-16 h-16 animate-float-delayed" 
+          className="top-24 left-[10%] lg:left-[15%] w-16 h-16 animate-float-delayed" 
           size={32}
         />
         <FloatingIcon 
           src="https://cdn.simpleicons.org/ubereats/06C167" 
-          className="top-60 left-[5%] w-14 h-14 animate-float-slow" 
+          className="top-[55%] left-[5%] lg:left-[8%] w-14 h-14 animate-float-slow" 
           size={28}
         />
         <FloatingIcon 
           src="https://cdn.simpleicons.org/loom/625DF5" 
-          className="bottom-10 left-[20%] w-12 h-12 animate-float" 
+          className="top-[75%] left-[15%] lg:left-[20%] w-12 h-12 animate-float" 
           size={24}
         />
 
         {/* Right Side */}
         <FloatingIcon 
           src="https://cdn.simpleicons.org/notion/000000" 
-          className="top-16 right-[18%] w-16 h-16 animate-float-slow" 
+          className="top-20 right-[12%] lg:right-[18%] w-16 h-16 animate-float-slow" 
           size={32}
         />
         <FloatingIcon 
           src="https://cdn.simpleicons.org/airbnb/FF5A5F" 
-          className="top-52 right-[8%] w-14 h-14 animate-float" 
+          className="top-[50%] right-[8%] w-14 h-14 animate-float" 
           size={28}
         />
         <FloatingIcon 
           src="https://cdn.simpleicons.org/headspace/F47D31" 
-          className="bottom-20 right-[25%] w-12 h-12 animate-float-delayed" 
+          className="top-[80%] right-[18%] lg:right-[22%] w-12 h-12 animate-float-delayed" 
           size={24}
         />
       </div>
@@ -85,15 +104,41 @@ export const Hero: React.FC = () => {
           </button>
         </div>
 
-        <div className="mt-20 pt-10 border-t border-gray-100">
+        <div className="mt-24 pt-10 border-t border-gray-100 bg-white/60 backdrop-blur-sm rounded-xl">
           <p className="text-sm text-gray-400 font-medium mb-8">Trusted by design teams at</p>
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 px-4">
-            <TrustedLogo src="https://cdn.simpleicons.org/uber/000000" name="Uber" />
-            <TrustedLogo src="https://cdn.simpleicons.org/headspace/000000" name="Headspace" />
-            <TrustedLogo src="https://cdn.simpleicons.org/meta/000000" name="Meta" />
-            <TrustedLogo src="https://cdn.simpleicons.org/airbnb/000000" name="Airbnb" />
-            <TrustedLogo src="https://cdn.simpleicons.org/revolut/000000" name="Revolut" />
-            <TrustedLogo src="https://cdn.simpleicons.org/pinterest/000000" name="Pinterest" />
+          
+          {/* Marquee Container */}
+          <div className="relative overflow-hidden mask-fade-sides pause-on-hover">
+             {/* w-max ensures the flex container doesn't wrap or shrink, fixing the overlapping issue */}
+             <div className="flex animate-scroll w-max">
+                
+                {/* Loop 1 - The first set of logos */}
+                <div className="flex items-center gap-24 pr-24">
+                  {logoSet.map((logo, idx) => (
+                    <img 
+                      key={`l1-${idx}`} 
+                      src={logo.src} 
+                      alt={logo.name} 
+                      className="h-7 w-auto opacity-40 hover:opacity-100 transition-all grayscale hover:grayscale-0 flex-shrink-0" 
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  ))}
+                </div>
+
+                {/* Loop 2 - Identical duplicate for seamless scrolling */}
+                <div className="flex items-center gap-24 pr-24">
+                  {logoSet.map((logo, idx) => (
+                    <img 
+                      key={`l2-${idx}`} 
+                      src={logo.src} 
+                      alt={logo.name} 
+                      className="h-7 w-auto opacity-40 hover:opacity-100 transition-all grayscale hover:grayscale-0 flex-shrink-0" 
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  ))}
+                </div>
+
+             </div>
           </div>
         </div>
       </div>

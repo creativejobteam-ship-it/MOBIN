@@ -1,5 +1,90 @@
 import React from 'react';
-import { Layers, Zap, Search } from 'lucide-react';
+
+// Custom mini illustrations for each design element
+const CardVisual = () => (
+    <div className="w-16 h-12 bg-white border border-gray-200 rounded shadow-[0_2px_4px_rgba(0,0,0,0.05)] p-1.5 flex flex-col gap-1.5 group-hover:border-gray-300 transition-colors">
+       <div className="w-1/2 h-1.5 bg-gray-200 rounded-full"></div>
+       <div className="w-full h-full bg-gray-50 rounded border border-dashed border-gray-200"></div>
+    </div>
+);
+
+const ButtonVisual = () => (
+    <div className="px-4 py-1.5 bg-black text-white rounded-md text-[10px] font-medium shadow-md transform group-hover:scale-105 transition-transform">
+        Action
+    </div>
+);
+
+const ToastVisual = () => (
+    <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 text-white rounded-full text-[8px] shadow-lg transform translate-y-1">
+       <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
+       <span className="opacity-90">Success</span>
+    </div>
+);
+
+const TabBarVisual = () => (
+    <div className="w-20 h-10 bg-gray-50 rounded-lg border border-gray-200 relative overflow-hidden flex flex-col justify-end">
+        <div className="h-4 bg-white border-t border-gray-200 w-full flex justify-around items-center px-1">
+             <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+             <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+             <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+        </div>
+    </div>
+);
+
+const BottomSheetVisual = () => (
+    <div className="w-16 h-14 bg-gray-100 rounded border border-gray-200 relative overflow-hidden flex flex-col justify-end">
+        <div className="h-10 bg-white rounded-t-lg shadow-[0_-2px_4px_rgba(0,0,0,0.05)] w-full flex justify-center pt-1.5 border-t border-gray-100 transition-transform group-hover:translate-y-[-2px]">
+             <div className="w-4 h-0.5 bg-gray-300 rounded-full"></div>
+        </div>
+    </div>
+);
+
+const DropdownVisual = () => (
+    <div className="flex flex-col items-center gap-1">
+        <div className="w-20 h-6 border border-gray-200 bg-white rounded flex items-center justify-between px-2 shadow-sm">
+             <div className="w-8 h-1 bg-gray-300 rounded-full"></div>
+             <div className="w-2 h-1 bg-gray-400 rounded-full"></div>
+        </div>
+        <div className="w-20 h-8 border border-gray-100 bg-white rounded shadow-md p-1.5 flex flex-col gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+             <div className="w-full h-1 bg-blue-100 rounded-full"></div>
+             <div className="w-2/3 h-1 bg-gray-100 rounded-full"></div>
+             <div className="w-1/2 h-1 bg-gray-100 rounded-full"></div>
+        </div>
+    </div>
+);
+
+const IndicatorVisual = () => (
+    <div className="flex gap-1.5 items-center justify-center p-2 bg-gray-50 rounded-full border border-gray-100">
+       <div className="w-2 h-2 rounded-full bg-black"></div>
+       <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+       <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+    </div>
+);
+
+const SidebarVisual = () => (
+    <div className="w-20 h-14 bg-white border border-gray-200 rounded flex overflow-hidden shadow-sm">
+        <div className="w-6 h-full bg-gray-50 border-r border-gray-100 p-1 flex flex-col gap-1">
+             <div className="w-3 h-3 bg-gray-300 rounded mb-1"></div>
+             <div className="w-full h-0.5 bg-gray-200 rounded"></div>
+             <div className="w-full h-0.5 bg-gray-200 rounded"></div>
+        </div>
+        <div className="flex-1 p-1.5">
+             <div className="w-full h-2 bg-gray-100 rounded mb-1"></div>
+             <div className="w-2/3 h-2 bg-gray-100 rounded"></div>
+        </div>
+    </div>
+);
+
+const patternItems = [
+    { label: 'Card', visual: <CardVisual /> },
+    { label: 'Button', visual: <ButtonVisual /> },
+    { label: 'Toast', visual: <ToastVisual /> },
+    { label: 'Tab bar', visual: <TabBarVisual /> },
+    { label: 'Bottom Sheet', visual: <BottomSheetVisual /> },
+    { label: 'Dropdown', visual: <DropdownVisual /> },
+    { label: 'Indicator', visual: <IndicatorVisual /> },
+    { label: 'Sidebar', visual: <SidebarVisual /> },
+];
 
 export const Features: React.FC = () => {
   return (
@@ -15,13 +100,13 @@ export const Features: React.FC = () => {
         </div>
 
         {/* Feature Grid: UI Elements simulation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24 opacity-80 hover:opacity-100 transition-opacity">
-           {['Card', 'Button', 'Toast', 'Tab bar', 'Bottom Sheet', 'Dropdown', 'Indicator', 'Sidebar'].map((item, idx) => (
-             <div key={idx} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col items-center justify-center gap-3 hover:shadow-md transition-shadow cursor-pointer group">
-                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
-                  <Layers size={24} className="text-gray-400 group-hover:text-blue-500" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
+           {patternItems.map((item, idx) => (
+             <div key={idx} className="bg-white h-36 rounded-xl border border-gray-100 shadow-sm flex flex-col items-center justify-between p-4 hover:shadow-md transition-all cursor-pointer group hover:-translate-y-1">
+                <div className="flex-1 flex items-center justify-center w-full">
+                  {item.visual}
                 </div>
-                <span className="font-medium text-gray-700">{item}</span>
+                <span className="font-medium text-gray-700 text-sm group-hover:text-black">{item.label}</span>
              </div>
            ))}
         </div>
